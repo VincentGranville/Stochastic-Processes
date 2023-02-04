@@ -5,10 +5,8 @@ n = 10000
 m = 5*n
 T = []
 X = []
-### U = []
 T.append(0.0)
 X.append(0.0)
-#### U.append(0.0)
 np.random.seed(1979)
 for k in range(1,m):
     u = np.random.uniform(0,1)
@@ -39,13 +37,16 @@ for k in range(1,m):
     sum /= (2*hn + 1)
     M.append(sum)
 
-print("done")
-
 for k in range(1,m):
     X[k] = X[k]/(n**0.5)
     S[k] = S[k]/(n**1.5)
     M[k] = M[k]/(n**0.5)
 
+axes = plt.axes()
+axes.tick_params(axis='both', which='major', labelsize=8)
+axes.tick_params(axis='both', which='minor', labelsize=8)
+for axis in ['top','bottom','left','right']:
+    axes.spines[axis].set_linewidth(0.5) 
 plt.plot(T, X, linewidth = 0.4, color = 'green', alpha = 0.2)   # Brownian motion
 plt.plot(T, S, linewidth = 0.8, color = 'orange', alpha = 0.8)  # integrated Brownian motion
 plt.plot(T, M, linewidth = 0.8, color = 'red', alpha = 1.0)     # moving average process
