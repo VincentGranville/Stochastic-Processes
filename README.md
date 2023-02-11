@@ -1,6 +1,6 @@
 Under contruction. For now, the following is available:
 <ul>
-<li> The Python scripts Brownian.py and brownian_reflective.py are used and described in chapter 1 of this new book, available <a href="https://mltechniques.com/2023/02/11/random-walks-brownian-motions-and-related-stochastic-processes/">here</a>.
+  <li> The Python scripts <code>Brownian.py</code> and <code>brownian_reflective.py</code> are used and described in chapter 1 of the new book, available <a href="https://mltechniques.com/2023/02/11/random-walks-brownian-motions-and-related-stochastic-processes/">here</a>. The title of this chapter is <em>Random Walks, Brownian Motions, and Related Stochastic Processes</em>. From the same link, you can download this chapter.
 </ul>
 
 This new book will integrate much of the content from my older book <em>Applied Stochastic Processes, Chaos Modeling, and Probabilistic Properties of Numeration Systems</em> is available <a href="https://mltechniques.com/resources/">here</a>. In addition, there will be a lot of new material.
