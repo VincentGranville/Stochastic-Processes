@@ -11,6 +11,8 @@ eps      = 0.00001
 n_basins = 0
 basin_count = {}
 basin_color = {}
+basin_x     = {}
+basin_y     = {}
 list_x = []
 list_y = []
 list_color = []
@@ -49,6 +51,8 @@ for X_0 in np.arange(-4, 4, 0.01):
             basin_count[basin_ID] = 1
             n_basins = n_basins + 1
             basin_color[basin_ID] = color[n_basins]
+            basin_x[basin_ID] = x
+            basin_y[basin_ID] = x
         list_x.append(X_0)
         list_y.append(Y_0)
         list_color.append(basin_color[basin_ID])
@@ -57,7 +61,10 @@ OUT.close()
 
 for basin_ID,count in basin_count.items():
     col = str(basin_color[basin_ID])
-    print("basinID: %4d count: %6d color: %8s" % (basin_ID,count, col))
+    x   = basin_x[basin_ID]
+    y   = basin_x[basin_ID]
+    print("basinID: %4d count: %6d color: %8s x: %7.4f y: %7.4f" \
+         % (basin_ID,count,col,x,y))
 
 axes = plt.axes()
 [axx.set_linewidth(0.2) for axx in axes.spines.values()]
