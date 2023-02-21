@@ -5,9 +5,8 @@ import matplotlib.pyplot as plt
 
 llambda  = 2  
 theta    = 1     
-learning = 0.75
+rho      = -0.25
 eps      = 0.00001
-eps2     = 0.2
 
 n_basins = 0
 basin_count = {}
@@ -23,12 +22,12 @@ color = [(0, 0, 0),
          (1, 1, 1), # (0.9, 0.8, 1)
          (1, 1, 0),
          (0, 0, 1), 
-         (0, 1, 1)]
+         (0, 1, 1)] 
 
 OUT=open("basins.txt","w")
 
 for X_0 in np.arange(-4, 4, 0.01):
-    print("X_0 =",X_0)
+    print("X_0 = %5.3f" % (X_0))
     for Y_0 in np.arange(-4, 4, 0.01):
         x = X_0
         y = Y_0
@@ -37,13 +36,9 @@ for X_0 in np.arange(-4, 4, 0.01):
         for k in range(100): 
             old_x = x
             old_y = y
-            x =(1-learning)*old_x + llambda*np.sin(theta*old_y)
-            y =(1-learning)*old_y + llambda*np.sin(theta*old_x)
+            x = -rho*old_x + llambda*np.sin(theta*old_y)
+            y = -rho*old_y + llambda*np.sin(theta*old_x)
             delta = max(abs(x-old_x), abs(y-old_y))
-        if abs(x)<eps:
-            x = 0
-        if abs(y)>eps:
-            y = 0
         if delta>0.2: 
             basin_ID = -1   # non-convergence zone (oscillating) 
         else:
@@ -61,7 +56,8 @@ for X_0 in np.arange(-4, 4, 0.01):
 OUT.close()
 
 for basin_ID,count in basin_count.items():
-    print(basin_ID, count, basin_color[basin_ID])
+    col = str(basin_color[basin_ID])
+    print("basinID: %4d count: %6d color: %8s" % (basin_ID,count, col))
 
 axes = plt.axes()
 [axx.set_linewidth(0.2) for axx in axes.spines.values()]
