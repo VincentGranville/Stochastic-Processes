@@ -3,9 +3,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-llambda  = 2  
+llambda  = 2 
 theta    = 1     
-rho      = -0.25
+rho      = -0.25  # rho replaced by c-1 in older version   
 eps      = 0.00001
 
 n_basins = 0
@@ -17,18 +17,27 @@ list_x = []
 list_y = []
 list_color = []
 
-color = [(0, 0, 0),
-         (1, 0, 0),
-         (0, 0, 0), 
-         (1, 0, 0), 
-         (1, 1, 1), # (0.9, 0.8, 1)
-         (1, 1, 0),
-         (0, 0, 1), 
-         (0, 1, 1)] 
+seed = 102 
+np.random.seed()
+
+# first 10 colors are pre-set
+color = []
+color= [(0.0, 1.0, 0.0),
+        (1.0, 0.0, 1.0),
+        (0.0, 0.0, 0.0), 
+        (1.0, 0.0, 0.0), 
+        (1.0, 1.0, 1.0), 
+        (1.0, 1.0, 0.0), 
+        (0.0, 0.0, 1.0), 
+        (0.5, 0.5, 0.0),
+        (0.0, 0.0, 0.7), 
+        (0.0, 0.6, 0.3)
+       ] 
+n_cols   = 10
 
 OUT=open("basins.txt","w")
 
-for X_0 in np.arange(-4, 4, 0.01):
+for X_0 in np.arange(-4, 4, 0.01): 
     print("X_0 = %5.3f" % (X_0))
     for Y_0 in np.arange(-4, 4, 0.01):
         x = X_0
@@ -50,6 +59,14 @@ for X_0 in np.arange(-4, 4, 0.01):
         else:
             basin_count[basin_ID] = 1
             n_basins = n_basins + 1
+            if n_basins > n_cols - 1:
+                # add color to color table for the new basin
+                red   = np.random.rand()
+                green = np.random.rand()
+                blue  = np.random.rand()
+                rgb = (red, green, blue)
+                color.append(rgb)
+                n_cols = n_cols + 1
             basin_color[basin_ID] = color[n_basins]
             basin_x[basin_ID] = x
             basin_y[basin_ID] = x
@@ -68,7 +85,7 @@ for basin_ID,count in basin_count.items():
 
 axes = plt.axes()
 [axx.set_linewidth(0.2) for axx in axes.spines.values()]
-# axes.set_facecolor("white")   # background color
+axes.set_facecolor("white")   # background color
 axes.margins(x=0)
 axes.margins(y=0)
 axes.tick_params(axis='both', which='major', labelsize=7)
