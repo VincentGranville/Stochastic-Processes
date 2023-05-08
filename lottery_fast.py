@@ -9,10 +9,15 @@ def big_seed(offset, beta):
     return(y0_1, z0_1)
 
 
-n = 40       # number of digits to compute 
-offset = 10  # digits start at location 1 + offset
-y, z = big_seed(offset, 2)
+n = 20000          # number of digits to compute 
+offset = 10**7     # digits start at location 1 + offset
+beta = 2
+y0, z0 = big_seed(offset, beta)
+y = y0
+z = z0
+
 digits = {}
+winning_numbers = {}
 
 for t in range(1, n): 
     if z < 2*y:
@@ -27,6 +32,22 @@ for t in range(1, n):
         w = 0
         for k in range(8):
             w += digits[t + offset - k] * (2**k)
+        winning_numbers[t + offset - k] = w
         print(t + offset, w)
 
-print("seed:", y, z)
+filename = "lottery_seed_y" + str(offset) + "_" + str(beta) + ".txt"
+OUT=open(filename,"w")
+OUT.write(str(y0))
+OUT.close()
+
+filename = "lottery_seed_z" + str(offset) + "_" + str(beta) + ".txt"
+OUT=open(filename,"w")
+OUT.write(str(z0))
+OUT.close()
+
+filename = "lottery_winning_numbers_" + str(offset) + "_" + str(beta) + ".txt"
+OUT=open(filename,"w")
+for time in winning_numbers:
+    number = winning_numbers[time]
+    OUT.write(str(time) + "\t" + str(number) + "\n")
+OUT.close()
