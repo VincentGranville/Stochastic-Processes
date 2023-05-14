@@ -56,11 +56,11 @@ def compute_profits(llambda, fee, seed):
     return(arr_profits, arr_cumul_profits, ROI_table) 
 
 
-ndays = 1000  
-nbets = 1000      # bets per day
+ndays = 10000     # time period = ndays
+nbets = 10000     # bets per day
 v     = 20        # wager
 llambda  = 0.30   # strictly between 0 and 1
-transaction_fee = 0.05 
+transaction_fee = 0.005 
 seed =  26  ##, 27, 28, 29, 30
 
 arr_profits, arr_cumul_profits, ROI_table =  compute_profits(llambda, transaction_fee, seed)
@@ -74,9 +74,9 @@ y = arr_cumul_profits
 def currency_ticks(x, pos):
     x = int(x / 1000)  # plotted values will be in thousand of $
     if x >= 0:
-        return '${:,.0f}'.format(x)
+        return '${:,.0f}k'.format(x)
     else:
-        return '-${:,.0f}'.format(abs(x))
+        return '-${:,.0f}k'.format(abs(x))
 
 mpl.rcParams['axes.linewidth'] = 0.5
 fig, axes = plt.subplots()
