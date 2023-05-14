@@ -55,49 +55,64 @@ def compute_profits(llambda, fee, seed):
 
     return(arr_profits, arr_cumul_profits, ROI_table) 
 
+#--- main part
 
 ndays = 10000     # time period = ndays
 nbets = 10000     # bets per day
 v     = 20        # wager
 llambda  = 0.30   # strictly between 0 and 1
 transaction_fee = 0.005 
-seed =  26  ##, 27, 28, 29, 30
+seed =  26  
 
-arr_profits, arr_cumul_profits, ROI_table =  compute_profits(llambda, transaction_fee, seed)
+arr_profits, arr_cumul_profits, ROI_table = compute_profits(llambda, 
+    transaction_fee, seed)
 
 
 #--- plot daily profit/loss distribution, and aggregated numbers over time
+
 x = np.arange(ndays)
 y = arr_cumul_profits
 
-# custom tick function
-def currency_ticks(x, pos):
-    x = int(x / 1000)  # plotted values will be in thousand of $
+# custom tick functions
+
+def currency_ticks_k(x, pos):
+    x = int(x / 1000)  # plotted values will be in thousand $
     if x >= 0:
         return '${:,.0f}k'.format(x)
     else:
         return '-${:,.0f}k'.format(abs(x))
 
+def currency_ticks_m(x, pos):
+    x = int(x / 1000000)  # plotted values will be in million $
+    if x >= 0:
+        return '${:,.0f}m'.format(x)
+    else:
+        return '-${:,.0f}m'.format(abs(x))
+
 mpl.rcParams['axes.linewidth'] = 0.5
-fig, axes = plt.subplots()
-axes.tick_params(axis='both', which='major', labelsize=8)
-axes.tick_params(axis='both', which='minor', labelsize=8)
 mpl.rc('xtick', labelsize=8) 
 mpl.rc('ytick', labelsize=8) 
-axes.plot(x, y, linewidth=0.3, c='tab:green', label='Zeta-geom')
 
-# format the y-axis tick labels using custom func
-tick = mtick.FuncFormatter(currency_ticks)
-axes.yaxis.set_major_formatter(tick)
+fig, axes = plt.subplots(nrows = 1, ncols = 2, figsize =(8, 3))
+axes[0].tick_params(axis='both', which='major', labelsize=8)
+axes[0].tick_params(axis='both', which='minor', labelsize=8)
+
+# plot: y axis in millions of dollars
+tick_m = mtick.FuncFormatter(currency_ticks_m)
+axes[0].yaxis.set_major_formatter(tick_m)
+axes[0].plot(x, y, linewidth=0.3, c='tab:green')
+
+# histogram: x axis in thousands of dollars
+tick_k = mtick.FuncFormatter(currency_ticks_k)
+axes[1].xaxis.set_major_formatter(tick_k) 
+plt.locator_params(axis='both', nbins=4)
+axes[1].hist(arr_profits, bins = 100,  linewidth = 0.5,edgecolor = "red",
+            color = 'bisque', stacked=True) 
 plt.show()
 
-fig, axes = plt.subplots()
-axes.xaxis.set_major_formatter(tick) 
-axes.hist(arr_profits, bins = 100,  linewidth = 0.5,edgecolor = "red",
-            color = 'bisque', stacked=True) #density = True,
-plt.show()
 
-# print ROI table
+#--- print ROI table
+
 print ("ROI Table:")
 for d in range(129):
     print("%3d %8.4f" %(d, ROI_table[d]))
